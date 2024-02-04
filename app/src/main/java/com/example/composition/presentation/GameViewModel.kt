@@ -29,7 +29,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private var timer: CountDownTimer? = null
 
     private val _formattedTime = MutableLiveData<String>()
-    val formatted: LiveData<String> = _formattedTime
+    val formattedTime: LiveData<String> = _formattedTime
 
     private val _question = MutableLiveData<Question>()
     val question: LiveData<Question> = _question
@@ -59,6 +59,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         getGameSettings(level)
         startTimer()
         generateQuestion()
+        updateProgress()
     }
 
     fun chooseAnswer(number: Int) {
@@ -80,6 +81,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun calculatePercentOfRightAnswers(): Int {
+        if (countOfQuestions == 0) {
+            return 0
+        }
         return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
     }
 
